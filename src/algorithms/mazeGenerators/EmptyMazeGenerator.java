@@ -10,7 +10,6 @@ public class EmptyMazeGenerator extends AMazeGenerator{
                 map[i][j] = 0;
             }
         }
-        Maze maze = new Maze(map, new Position(0,0), new Position(rows - 1, columns - 1));
-        return maze;
+        return new Maze(map, new Position(0,0), new Position(rows - 1, columns - 1));
     }
 }

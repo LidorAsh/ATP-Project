@@ -1,9 +1,9 @@
 package algorithms.mazeGenerators;
 
 public class Maze {
-    private int[][] map;
-    private Position start;
-    private Position goal;
+    private final int[][] map;
+    private final Position start;
+    private final Position goal;
 
     public Maze(int[][] maze, Position start, Position goal) {
         this.map = maze;

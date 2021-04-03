@@ -5,7 +5,6 @@ import java.util.Objects;
 public class Position {
     private int row;
     private int column;
-    //private int value;
 
     public Position(int row, int column) {
         this.row = row;
@@ -16,17 +15,17 @@ public class Position {
         return row;
     }
 
-//    public void setRow(int row) {
-//        this.row = row;
-//    }
+    public void setRow(int row) {
+        this.row = row;
+    }
 
     public int getColumnIndex() {
         return column;
     }
 
-//    public void setColumn(int column) {
-//        this.column = column;
-//    }
+    public void setColumn(int column) {
+        this.column = column;
+    }
 
     @Override
     public String toString() {
@@ -34,13 +33,6 @@ public class Position {
 
     }
 
-//    public void setValue(int value) {
-//        this.value = value;
-//    }
-//
-//    public int getValue() {
-//        return value;
-//    }
 
     @Override
     public int hashCode() {

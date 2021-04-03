@@ -12,13 +12,11 @@ public class SimpleMazeGenerator extends AMazeGenerator{
                 map[i][j] = rand.nextInt(2);
 
         int randRow = rand.nextInt(rows);
-        int end = randRow;
 
         for (int i = 0; i < columns; i++)
             map[randRow][i] = 0;
 
-        Maze maze = new Maze(map, new Position(randRow,0), new Position(randRow, columns - 1));
-        return maze;
+        return new Maze(map, new Position(randRow,0), new Position(randRow, columns - 1));
     }
 
 }
