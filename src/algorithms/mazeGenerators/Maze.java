@@ -1,9 +1,15 @@
 package algorithms.mazeGenerators;
 
+/**
+ * This class represent a maze
+ */
 public class Maze {
+
+    /* the variables are final because we don't change their content after the generation */
     private final int[][] map;
     private final Position start;
     private final Position goal;
+
 
     public Maze(int[][] maze, Position start, Position goal) {
         this.map = maze;
@@ -19,6 +25,10 @@ public class Maze {
         return this.goal;
     }
 
+
+    /**
+     * Method which print the maze in the requested format
+     */
     public void print(){
         for (int i = 0; i < map.length; i++){
             System.out.print("{ ");

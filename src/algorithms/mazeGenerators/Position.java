@@ -2,6 +2,9 @@ package algorithms.mazeGenerators;
 
 import java.util.Objects;
 
+/**
+ * This class represent a position in the maze (using coordinates for row and column)
+ */
 public class Position {
     private int row;
     private int column;
@@ -30,9 +33,7 @@ public class Position {
     @Override
     public String toString() {
         return String.format("{%d, %d}", this.row, this.column);
-
     }
-
 
     @Override
     public int hashCode() {

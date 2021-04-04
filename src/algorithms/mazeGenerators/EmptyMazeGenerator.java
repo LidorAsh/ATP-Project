@@ -1,5 +1,9 @@
 package algorithms.mazeGenerators;
 
+
+/**
+ * This class represent an empty maze (maze without walls)
+ */
 public class EmptyMazeGenerator extends AMazeGenerator{
 
     @Override
