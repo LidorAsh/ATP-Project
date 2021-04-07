@@ -25,6 +25,9 @@ public class Maze {
         return this.goal;
     }
 
+    public int getXMazeLength(){return  this.map[0].length;}
+
+    public int getYMazeLength(){return  this.map.length;}
 
     /**
      * Method which print the maze in the requested format
