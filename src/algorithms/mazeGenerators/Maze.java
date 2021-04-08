@@ -1,5 +1,7 @@
 package algorithms.mazeGenerators;
 
+import java.util.ArrayList;
+
 /**
  * This class represent a maze
  */
@@ -25,9 +27,13 @@ public class Maze {
         return this.goal;
     }
 
-    public int getXMazeLength(){return  this.map[0].length;}
+    public int getXMazeLength() {return  this.map[0].length;}
 
-    public int getYMazeLength(){return  this.map.length;}
+    public int getYMazeLength() {return  this.map.length;}
+
+    public int[][] getMap() {
+        return map;
+    }
 
     /**
      * Method which print the maze in the requested format
@@ -47,4 +53,6 @@ public class Maze {
             System.out.println("}");
         }
     }
+
+
 }

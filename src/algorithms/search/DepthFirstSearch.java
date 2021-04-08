@@ -3,12 +3,11 @@ package algorithms.search;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
-public class DepthFirstSearch extends Isearcher
+public class DepthFirstSearch extends ASearchingAlgorithm
     {
-        public static void DFS(Maze maze )
+        public Position[] DFS(Maze maze )
             {
                 //stack data structure
                 Stack<Position> stack = new Stack<>();
@@ -34,24 +33,24 @@ public class DepthFirstSearch extends Isearcher
 
                 while( !stack.isEmpty() )
                     {
-                        Position curr = (Position) stack.pop();
+                        Position curr =  stack.pop();
 
                         solutions[solIndex]= curr;
                         solIndex=solIndex+1;
-/*
-                        tempmax=tempmax-1;
-                        if(curr.getRowIndex() == maze.getGoalPosition().getRowIndex() && curr.getColumnIndex() == maze.getGoalPosition().getColumnIndex())
-                            {
 
-                                System.out.println("Found the End!!!");
-                                System.out.println("Number of Nodes Expanded: " + NumberofNodesExpanded);
-                                System.out.println("Max tree depth searched: " + depth);
-                                System.out.println("Max frontier size: "+maxfrontier);
-                                System.out.println();
+//                        tempmax=tempmax-1;
+//                        if(curr.getRowIndex() == maze.getGoalPosition().getRowIndex() && curr.getColumnIndex() == maze.getGoalPosition().getColumnIndex())
+//                            {
+//
+//                                System.out.println("Found the End!!!");
+//                                System.out.println("Number of Nodes Expanded: " + NumberofNodesExpanded);
+//                                System.out.println("Max tree depth searched: " + depth);
+//                                System.out.println("Max frontier size: "+maxfrontier);
+//                                System.out.println();
+//
+//                                return;
+//                            }
 
-                                return;
-                            }
-*/
 
 
                         //add neighbors
@@ -122,5 +121,71 @@ public class DepthFirstSearch extends Isearcher
                                     }
                             }
                     }
+                return solutions;
             }
-}
+
+        @Override
+        public Solution solve(ISearchable iSearchable) {
+            Stack<AState> toHandle = new Stack<>();
+            HashSet<AState> visited = new HashSet<>();
+            ArrayList<AState> solutionSteps = new ArrayList<>();
+
+            boolean findSolution = false;
+
+            AState start = iSearchable.getStartState();
+            AState end = iSearchable.getGoalState();
+
+            toHandle.push(start);
+            visited.add(start);
+//            start.setVisited(true);
+
+            AState current = null;
+             while (!toHandle.empty()){
+//            for (int j = 0; j < 10; j++){
+                current = toHandle.pop();
+
+
+                //System.out.println(current);
+                if (current.equals(end)){
+                    findSolution = true;
+                    break;
+                }
+
+
+                ArrayList<AState> neighbors = iSearchable.getAllSuccessors(current);
+                for (int i = 0; i < neighbors.size(); i++) {
+                    AState nextNeighbor = neighbors.get(i);
+                    if(!visited.contains(nextNeighbor)) {
+                        this.NumberOfNodesEvaluated++;
+//                    nextNeighbor.setVisited(true);
+                        visited.add(nextNeighbor);
+                        nextNeighbor.setCameFrom(current);
+                        toHandle.push(nextNeighbor);
+                    }
+                }
+            }
+
+
+            if(findSolution){
+                while(current.getCameFrom() != null){
+                    solutionSteps.add(current);
+                    current = current.getCameFrom();
+                }
+                solutionSteps.add(new MazeState(new Position(1,0)));
+
+            }
+
+            Collections.reverse(solutionSteps);
+            return new Solution(solutionSteps);
+        }
+
+        @Override
+        public String getName() {
+            return "DepthFirstSearch";
+        }
+
+        @Override
+        public int getNumberOfNodesEvaluated() {
+            return this.NumberOfNodesEvaluated;
+        }
+    }

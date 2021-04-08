@@ -1,5 +1,7 @@
 package algorithms.mazeGenerators;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -49,4 +51,32 @@ public class Position {
         else
             return false;
     }
+
+    public ArrayList<Position> getNeighborsOfPosition(){
+        ArrayList<Position> neighbors = new ArrayList<>();
+        // upper row
+        neighbors.add(new Position(this.row - 1, this.column - 1));
+        neighbors.add(new Position(this.row - 1, this.column));
+        neighbors.add(new Position(this.row - 1, this.column + 1));
+        // same row
+        neighbors.add(new Position(this.row, this.column + 1));
+        neighbors.add(new Position(this.row, this.column -1));
+        // lower row
+        neighbors.add(new Position(this.row + 1, this.column - 1));
+        neighbors.add(new Position(this.row + 1, this.column));
+        neighbors.add(new Position(this.row + 1, this.column + 1));
+
+        return neighbors;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+

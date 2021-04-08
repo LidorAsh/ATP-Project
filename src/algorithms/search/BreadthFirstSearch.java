@@ -4,9 +4,22 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 
 
-public class BreadthFirstSearch extends Isearcher
+public class BreadthFirstSearch extends ASearchingAlgorithm
     {
-        public static void BFS(Maze maze)
+        @Override
+        public Solution solve(ISearchable iSearchable) {return null;}
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public int getNumberOfNodesEvaluated() {
+            return 0;
+        }
+
+        public void BFS(Maze maze)
         {
             Route que = new Route(null, null);
             Position[] solutions = new Position[maze.getYMazeLength()* maze.getXMazeLength()];
@@ -116,4 +129,6 @@ public class BreadthFirstSearch extends Isearcher
                 }
             }
         }
+
+
     }

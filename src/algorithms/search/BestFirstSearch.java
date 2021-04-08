@@ -5,7 +5,7 @@ import algorithms.mazeGenerators.Position;
 
 import java.util.*;
 
-public class BestFirstSearch extends Isearcher
+public class BestFirstSearch extends ASearchingAlgorithm
     {
         public static void GreedySearch(Maze maze )
             {
@@ -140,5 +140,20 @@ public class BestFirstSearch extends Isearcher
                 }
             frontier.remove(minPosition);
             return minPosition;
+        }
+
+        @Override
+        public Solution solve(ISearchable iSearchable) {
+            return null;
+        }
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public int getNumberOfNodesEvaluated() {
+            return 0;
         }
     }
