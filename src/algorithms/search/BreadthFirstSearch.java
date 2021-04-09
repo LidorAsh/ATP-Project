@@ -41,7 +41,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
                     solutionSteps.add(current);
                     current = current.getCameFrom();
                 }
-                solutionSteps.add(new MazeState(new Position(1,0)));
+                solutionSteps.add(start);
             }
 
             Collections.reverse(solutionSteps);
