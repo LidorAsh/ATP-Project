@@ -2,7 +2,6 @@ package test;
         import algorithms.mazeGenerators.IMazeGenerator;
         import algorithms.mazeGenerators.Maze;
         import algorithms.mazeGenerators.MyMazeGenerator;
-        import algorithms.mazeGenerators.Position;
         import algorithms.search.*;
         import java.util.ArrayList;
 
@@ -12,19 +11,9 @@ public class RunSearchOnMaze {
         Maze maze = mg.generate(10, 10);
         maze.print();
         SearchableMaze searchableMaze = new SearchableMaze(maze);
-//        solveProblem(searchableMaze, new BreadthFirstSearch());
+        solveProblem(searchableMaze, new BreadthFirstSearch());
         solveProblem(searchableMaze, new DepthFirstSearch());
 //        solveProblem(searchableMaze, new BestFirstSearch());
-
-//        AState s = new MazeState(new Position(1,1));
-//        AState s1 = new MazeState(new Position(2,1));
-//        if(s.equals(s1))
-//            System.out.println("same");
-
-//        Position p1 = new Position(1,1);
-//        Position p2 = new Position(1,1);
-//        if(p1 == p2)
-//            System.out.println("same");
 
     }
     private static void solveProblem(ISearchable domain, ISearchingAlgorithm searcher) {

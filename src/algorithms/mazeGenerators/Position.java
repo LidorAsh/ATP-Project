@@ -54,17 +54,15 @@ public class Position {
 
     public ArrayList<Position> getNeighborsOfPosition(){
         ArrayList<Position> neighbors = new ArrayList<>();
-        // upper row
-        neighbors.add(new Position(this.row - 1, this.column - 1));
+        // Clockwise starting from the top
         neighbors.add(new Position(this.row - 1, this.column));
         neighbors.add(new Position(this.row - 1, this.column + 1));
-        // same row
         neighbors.add(new Position(this.row, this.column + 1));
-        neighbors.add(new Position(this.row, this.column -1));
-        // lower row
-        neighbors.add(new Position(this.row + 1, this.column - 1));
-        neighbors.add(new Position(this.row + 1, this.column));
         neighbors.add(new Position(this.row + 1, this.column + 1));
+        neighbors.add(new Position(this.row + 1, this.column));
+        neighbors.add(new Position(this.row + 1, this.column - 1));
+        neighbors.add(new Position(this.row, this.column -1));
+        neighbors.add(new Position(this.row - 1, this.column - 1));
 
         return neighbors;
     }

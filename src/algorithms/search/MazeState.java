@@ -1,14 +1,11 @@
 package algorithms.search;
 
 import algorithms.mazeGenerators.Position;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class MazeState extends AState{
     private Position p;
-
-
 
     public MazeState(Position p) {
         super();
@@ -16,12 +13,6 @@ public class MazeState extends AState{
     }
 
     public ArrayList<Position> getAllNeighbors(){
-
-        //ArrayList<AState> stateArray = new ArrayList<>();
-//        ArrayList<Position> positionArray = this.p.getNeighborsOfPosition();
-//        for (Position po: positionArray) {
-//            stateArray.add(new MazeState(po));
-//        }
         return this.p.getNeighborsOfPosition();
     }
 
