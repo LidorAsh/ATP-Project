@@ -13,6 +13,11 @@ public class AState {
 
     }
 
+    public int getCost()
+        {
+            return cost;
+        }
+
     public AState getCameFrom() {
         return cameFrom;
     }

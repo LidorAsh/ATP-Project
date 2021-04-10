@@ -6,17 +6,19 @@ import java.util.*;
 public class DepthFirstSearch extends ASearchingAlgorithm {
         @Override
         public Solution solve(ISearchable iSearchable) {
-            Stack<AState> toHandle = new Stack<>();
-            HashSet<AState> visited = new HashSet<>();
-            ArrayList<AState> solutionSteps = new ArrayList<>();
+            Stack<AState> toHandle = new Stack<>();//contain all the unhandled situations
+            HashSet<AState> visited = new HashSet<>();//contain all the points we visited
+            ArrayList<AState> solutionSteps = new ArrayList<>();//contain the path of the solution
 
             boolean findSolution = false;
 
+            //importing the start and end position from the given maze and mark the start as visited
             AState start = iSearchable.getStartState();
             AState end = iSearchable.getGoalState();
             toHandle.push(start);
             visited.add(start);
 
+            //handle unhandled points and looking for the end
             AState current = null;
             while (!toHandle.empty()){
                 current = toHandle.pop();
@@ -26,6 +28,7 @@ public class DepthFirstSearch extends ASearchingAlgorithm {
                     break;
                 }
 
+                //go throughout all the neighbors and mark as visited and send to handle
                 ArrayList<AState> neighbors = iSearchable.getAllSuccessors(current);
                 for (AState nextNeighbor : neighbors) {
                     if (!visited.contains(nextNeighbor)) {
@@ -37,6 +40,7 @@ public class DepthFirstSearch extends ASearchingAlgorithm {
                 }
             }
 
+            //once found the end, go back and save the path
             if(findSolution){
                 while(current.getCameFrom() != null){
                     solutionSteps.add(current);
@@ -44,6 +48,8 @@ public class DepthFirstSearch extends ASearchingAlgorithm {
                 }
                 solutionSteps.add(start);
             }
+
+            //organize the path to be from the start to end and return it
             Collections.reverse(solutionSteps);
             return new Solution(solutionSteps);
         }
