@@ -1,14 +1,13 @@
 package algorithms.search;
 
-import algorithms.mazeGenerators.Position;
 import java.util.*;
 
 public class BreadthFirstSearch extends ASearchingAlgorithm {
         @Override
         public Solution solve(ISearchable iSearchable) {
-            Queue<AState> toHandle = new ArrayDeque<>();//contain all the unhandled situations
-            HashSet<AState> visited = new HashSet<>();//contain all the points we visited
-            ArrayList<AState> solutionSteps = new ArrayList<>();//contain the path of the solution
+            Queue<AState> toHandle = new ArrayDeque<>(); //contain all the unhandled situations
+            HashSet<AState> visited = new HashSet<>(); //contain all the points we visited
+            ArrayList<AState> solutionSteps = new ArrayList<>(); //contain the path of the solution
 
             boolean findSolution = false;
 

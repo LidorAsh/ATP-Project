@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MazeState extends AState{
-    private Position p;
+    private final Position p;
 
     public MazeState(Position p) {
         super();
@@ -32,5 +32,6 @@ public class MazeState extends AState{
     public String toString() {
         return p.toString();
     }
+
 }
 

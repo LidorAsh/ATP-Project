@@ -1,7 +1,5 @@
 package algorithms.mazeGenerators;
 
-import java.util.ArrayList;
-
 /**
  * This class represent a maze
  */

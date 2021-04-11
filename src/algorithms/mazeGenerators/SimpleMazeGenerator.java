@@ -7,7 +7,10 @@ import java.util.Random;
  */
 public class SimpleMazeGenerator extends AMazeGenerator{
     @Override
-    public Maze generate(int rows, int columns) {
+    public Maze generate(int rows, int columns) throws IllegalArgumentException{
+        if (rows < 2 || columns < 2)
+            throw new IllegalArgumentException("Maze size must be at least 2*2");
+
         int[][] map = new int[rows][columns];
         Random rand = new Random();
         for (int i = 0; i < rows; i++)

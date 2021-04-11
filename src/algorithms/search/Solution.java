@@ -2,7 +2,7 @@ package algorithms.search;
 
 import java.util.ArrayList;
 
-/** This class represent solution for for an searchable problem
+/** This class represent solution for a searchable problem
  */
 public class Solution {
     private final ArrayList<AState> path;

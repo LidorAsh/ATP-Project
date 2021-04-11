@@ -1,16 +1,13 @@
 package algorithms.search;
 
-import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.Position;
-
 import java.util.*;
 
 public class BestFirstSearch extends ASearchingAlgorithm {
     @Override
     public Solution solve(ISearchable iSearchable) {
-        PriorityQueue<AState> toHandle = new PriorityQueue<>(comparator);//contain all the unhandled situations
-        HashSet<AState> visited = new HashSet<>();//contain all the points we visited
-        ArrayList<AState> solutionSteps = new ArrayList<>();//contain the path of the solution
+        PriorityQueue<AState> toHandle = new PriorityQueue<>(); //contain all the unhandled situations
+        HashSet<AState> visited = new HashSet<>(); //contain all the points we visited
+        ArrayList<AState> solutionSteps = new ArrayList<>(); //contain the path of the solution
 
         boolean findSolution = false;
 
@@ -23,7 +20,7 @@ public class BestFirstSearch extends ASearchingAlgorithm {
         //handle unhandled points and looking for the end
         AState current = null;
         while (!toHandle.isEmpty()){
-            current = (AState) toHandle.poll();
+            current = toHandle.poll();
 
             if (current.equals(end)){
                 findSolution = true;
@@ -65,16 +62,4 @@ public class BestFirstSearch extends ASearchingAlgorithm {
     public int getNumberOfNodesEvaluated() {
         return this.NumberOfNodesEvaluated;
     }
-
-    static class MyComparator implements Comparator<AState>
-        {
-            @Override
-            public int compare(AState e1, AState e2)
-                {
-                    return e1.getCost() - e2.getCost();
-                }
-        }
-
-
-    PriorityQ.MyComparator comparator = new PriorityQ.MyComparator();
 }

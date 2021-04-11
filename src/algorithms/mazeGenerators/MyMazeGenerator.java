@@ -13,7 +13,9 @@ public class MyMazeGenerator extends AMazeGenerator{
      * @return a maze (the algorithm is the iterative DFS)
      */
     @Override
-    public Maze generate(int rows, int columns) {
+    public Maze generate(int rows, int columns) throws IllegalArgumentException{
+        if (rows < 2 || columns < 2)
+            throw new IllegalArgumentException("Maze size must be at least 2*2");
 
         int[][] maze;
         Random rand = new Random();

@@ -1,6 +1,6 @@
 package algorithms.search;
 
-public class AState {
+public class AState implements Comparable<AState>{
     private int cost;
     private AState cameFrom;
 
@@ -9,9 +9,7 @@ public class AState {
         this.cameFrom = cameFrom;
     }
 
-    public AState() {
-
-    }
+    public AState() { }
 
     public int getCost()
         {
@@ -24,5 +22,10 @@ public class AState {
 
     public void setCameFrom(AState cameFrom) {
         this.cameFrom = cameFrom;
+    }
+
+    @Override
+    public int compareTo(AState o) {
+        return this.getCost() - o.getCost();
     }
 }
