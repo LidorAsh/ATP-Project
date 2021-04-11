@@ -1,8 +1,5 @@
 package algorithms.mazeGenerators;
 
-
-import java.security.InvalidParameterException;
-
 /**
  * This class represent an empty maze (maze without walls)
  */
