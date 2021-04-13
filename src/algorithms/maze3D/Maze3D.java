@@ -8,28 +8,35 @@ public class Maze3D {
     private final Position3D start;
     private final Position3D goal;
 
+    //create a 3D maze using given specs
     public Maze3D(Position3D start, Position3D goal, int[][][] map) {
         this.map = map;
         this.start = start;
         this.goal = goal;
     }
 
+    //return the maze
     public int[][][] getMap() {
         return this.map;
     }
 
+    //return the start position
     public Position3D getStartPosition() {
         return this.start;
     }
 
+    //return the goal position
     public Position3D getGoalPosition(){
         return this.goal;
     }
 
+    //return the X length of the maze
     public int getXMazeLength() {return  this.map[0][0].length;}
 
+    //return the Y length of the maze
     public int getYMazeLength() {return  this.map[0].length;}
 
+    //return the Z length of the maze
     public int getZMazeLength() {return  this.map.length;}
 
     /**

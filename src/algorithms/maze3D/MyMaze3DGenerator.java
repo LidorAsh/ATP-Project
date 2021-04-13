@@ -6,9 +6,10 @@ import java.util.Random;
 import java.util.Stack;
 
 public class MyMaze3DGenerator extends AMaze3DGenerator{
+    //generate a 3D maze
     @Override
     public Maze3D generate(int depth, int row, int column) throws IllegalArgumentException{
-        if (depth < 2 || row < 2 || column < 2)
+        if (depth < 2 || row < 2 || column < 2)//checks if the maze is legal
             throw new IllegalArgumentException("3D Maze size must be at least 2*2*2");
 
         int[][][] maze;
@@ -17,11 +18,12 @@ public class MyMaze3DGenerator extends AMaze3DGenerator{
         HashSet<Position3D> visited = new HashSet<>(); // // this hash set store the visited positions
         Position3D end = new Position3D(0, row - 2, column - 1);
 
+        // start with maze full of walls
         maze = new int[depth][row][column];
         for (int z = 0; z < depth; z++) {
             for (int i = 0; i < row; i++)
                 for (int j = 0; j < column; j++)
-                    maze[z][i][j] = 1; // start with maze full of walls
+                    maze[z][i][j] = 1;
         }
 
         // initial cells

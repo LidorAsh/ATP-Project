@@ -14,16 +14,19 @@ public class SearchableMaze3D implements ISearchable {
         this.maze3D = m;
     }
 
+    //get the start position from the maze and return it
     @Override
     public AState getStartState() {
         return new Maze3DState(this.maze3D.getStartPosition());
     }
 
+    //get the goal position from the maze and return it
     @Override
     public AState getGoalState() {
         return new Maze3DState(this.maze3D.getGoalPosition());
     }
 
+    //finds and return all the successors of the current state
     @Override
     public ArrayList<AState> getAllSuccessors(AState s) {
         if (!(s instanceof Maze3DState))
@@ -33,6 +36,7 @@ public class SearchableMaze3D implements ISearchable {
         ArrayList<Position3D> neighbors = mazeState.getAllNeighbors();
         ArrayList<AState> validNeighbors = new ArrayList<>();
 
+        //getting all the valid neighbors
         for (Position3D p: neighbors) {
             int depth = p.getDepthIndex(), row = p.getRowIndex(), column = p.getColumnIndex();
             if (row >=0 && row < maze3D.getYMazeLength() && column >= 0 && column < maze3D.getXMazeLength() && depth >= 0 && depth < maze3D.getZMazeLength() && mazeMap[depth][row][column] != 1)
