@@ -1,16 +1,15 @@
 package algorithms.maze3D;
 
-import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;
 import algorithms.search.ISearchable;
-import algorithms.search.MazeState;
-
 import java.util.ArrayList;
 
 public class SearchableMaze3D implements ISearchable {
     private final Maze3D maze3D;
 
-    public SearchableMaze3D(Maze3D m) {
+    public SearchableMaze3D(Maze3D m) throws IllegalArgumentException{
+        if(m == null)
+            throw new IllegalArgumentException("3D Maze can not be null");
         this.maze3D = m;
     }
 

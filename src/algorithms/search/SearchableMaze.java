@@ -8,7 +8,9 @@ import java.util.ArrayList;
 public class SearchableMaze implements ISearchable{
     private final Maze maze;
 
-    public SearchableMaze(Maze m) {
+    public SearchableMaze(Maze m) throws IllegalArgumentException {
+        if(m == null)
+            throw new IllegalArgumentException("Maze can not be null");
         this.maze = m;
     }
 

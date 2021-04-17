@@ -105,6 +105,7 @@ public class MyMazeGenerator extends AMazeGenerator{
                 }
             }
         }
+        maze[end.getRowIndex()][end.getColumnIndex()] = 0;
         return new Maze(maze, new Position(1, 0), end); // the start position is constant while the end position is random
     }
 }
