@@ -3,7 +3,7 @@ package algorithms.mazeGenerators;
 /**
  * This class is an abstract class which implements the maze generator interface
  */
-abstract class AMazeGenerator implements IMazeGenerator {
+public abstract class AMazeGenerator implements IMazeGenerator {
 
     /*
      * Method that measure the time taken to generate a maze
