@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Position3D {
-
     private int depth;
     private int row;
     private int column;

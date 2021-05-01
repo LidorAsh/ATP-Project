@@ -129,6 +129,8 @@ public class MyMaze3DGenerator extends AMaze3DGenerator{
                 }
             }
         }
+
+        maze[end.getDepthIndex()][end.getRowIndex()][end.getColumnIndex()] = 0;
         return new Maze3D(new Position3D(0, 1, 0), end, maze); // the start position is constant while the end position is random
     }
 }

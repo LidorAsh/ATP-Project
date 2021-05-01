@@ -1,12 +1,11 @@
 package algorithms.maze3D;
 
 import algorithms.search.AState;
-import algorithms.search.MazeState;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Maze3DState extends AState {
-    private Position3D position3D;
+    private final Position3D position3D;
 
     //creates a 3D maze state using the 2D maze state constructor
     public Maze3DState(Position3D position3D) {

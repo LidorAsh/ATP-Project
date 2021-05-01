@@ -48,6 +48,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
                 solutionSteps.add(start);
             }
 
+
             //organize the path to be from the start to end and return it
             Collections.reverse(solutionSteps);
             return new Solution(solutionSteps);
