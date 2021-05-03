@@ -18,11 +18,16 @@ public class SimpleCompressorOutputStream extends OutputStream
 
         }
 
-        public void compress(byte[] b) throws IOException
+        public void write(byte[] b) throws IOException
             {
             String s;
-            byte[] total = new byte[Byte.parseByte(String.valueOf(b[1]))];
-            int p = 6, counter = 0, i = 0, first = (String.valueOf(b[6])).charAt(0);
+            byte total;
+            int p = 6, counter = 0;
+            for(int i = 0;i<=5;i++)
+            {
+                out.write(b[i]);
+            }
+            out.write((String.valueOf(b[6])).charAt(0));
             for(int j = 0; j<= Byte.parseByte(String.valueOf(b[0]), 2); j = j+7)
             {
                 //convert the byte to string
@@ -35,25 +40,24 @@ public class SimpleCompressorOutputStream extends OutputStream
                         //in case they are the sa,e but no room left in the byte
                         if(counter == 255)
                         {
-                            total[i] = (Byte.decode(String.valueOf(counter)));
+                            total = (Byte.decode(String.valueOf(counter)));
                             counter = 0;
-                            i++;
-                            total[i] = (Byte.decode(String.valueOf(counter)));
-                            i++;
+                            out.write(total);
+                            total = (Byte.decode(String.valueOf(counter)));
+                            out.write(total);
                         }
                         counter++;
                     }
                         //in case they are different
                     else
                     {
-                        total[i] = (Byte.decode(String.valueOf(counter)));
+                        total = (Byte.decode(String.valueOf(counter)));
                         counter = 0;
-                        i++;
+                        out.write(total);
                     }
                     j++;
                 }
                 p++;
-                out.write(total);
                 out.close();
             }
         }

@@ -1,5 +1,7 @@
 package algorithms.mazeGenerators;
 
+import static java.lang.Byte.*;
+
 /**
  * This class represent a maze
  */
@@ -18,16 +20,18 @@ public class Maze {
     }
 
     public Maze(byte[] b) {
-        int[][] maze = new int[Byte.parseByte(String.valueOf(b[0]), 2)][Byte.parseByte(String.valueOf(b[1]), 2)];
-        int p = 6;
+        /*if((parseByte(String.valueOf(b[0])) == 0) || (parseByte(String.valueOf(b[1])) == 0))
+            { System.exit(0);}
+        */int[][] maze = new int[parseByte(String.valueOf(b[0]), 2)][parseByte(String.valueOf(b[1]), 2)];
+        int p = b[5];
         String s;
-        for(int i = 0; i<= Byte.parseByte(String.valueOf(b[0]), 2); i++)
+        for(int i = 0; i<= parseByte(String.valueOf(b[0]), 2); i++)
         {
-            for(int j = 0; j<= Byte.parseByte(String.valueOf(b[1])); j = j+7)
+            for(int j = 0; j<= parseByte(String.valueOf(b[1])); j = j+7)
             {
                 //convert the byte to string
                 s = String.valueOf(b[p]);
-                for (int f = 0; f<=s.length()-1;f++)
+                for (int f = 0; f<s.length()-1;f++)
                     {
                         //take each letter in s and convert to int it and add to maze
                         maze[i][j] = Integer.parseInt(s.substring(f, f));
@@ -38,8 +42,8 @@ public class Maze {
         }
         this.map = maze;
         //convert from byte to string to int
-        this.start = new Position(Byte.parseByte(String.valueOf(b[2]), 2), Byte.parseByte(String.valueOf(b[3]), 2));
-        this.goal = new Position(Byte.parseByte(String.valueOf(b[4]), 2), Byte.parseByte(String.valueOf(b[5]), 2));
+        this.start = new Position(parseByte(String.valueOf(b[2]), 2), parseByte(String.valueOf(b[3]), 2));
+        this.goal = new Position(parseByte(String.valueOf(b[4]), 2), parseByte(String.valueOf(b[5]), 2));
     }
 
     public Position getStartPosition() {
@@ -80,31 +84,57 @@ public class Maze {
 
     public byte[] toByteArray()
         {
-            byte[] b = new byte[map.length* map[0].length + 6];
-            int p = 6;
+            byte[] b = new byte[(map.length) * (map[0].length) * 2];
+            //convert to byte and add to the array
+            b[0] = (byte) locate(b, map.length, 6);
+            b[1] = (byte) (locate(b, map[0].length, b[0] + 6) + b[0]);
+            b[2] = (byte) (locate(b, start.getRowIndex(), b[1] + 6) + b[1]);
+            b[3] = (byte) (locate(b, start.getColumnIndex(), b[2] + 6) + b[2]);
+            b[4] = (byte) (locate(b, goal.getRowIndex(), b[3] + 6) + b[3]);
+            b[5] = (byte) (locate(b, goal.getColumnIndex(), b[4] + 6) + b[4]);
+            int p = b[5] + 6;
             StringBuilder s = new StringBuilder();
-            for(int i = 0; i<= map.length; i++)
-            {
-                for(int j = 0; j<= map[0].length; j++)
+            for (int[] ints : map)
                 {
-                    s.append(map[i][j]);
+                    for (int j = 0; j < map[0].length; j++)
+                        {
+                            s.append(ints[j]);
+                        }
                 }
-            }
-            for(int k = 0; k<= s.length(); k=k+7)
+            for(int k = 0; k< s.length(); k=k+8)
             {
-                //convert to int and then to byte
-                int temp = Byte.parseByte(s.substring(k,k+7), 2);
-                b[p] = Byte.decode(String.valueOf(temp));
+                //convert from string to byte
+                //int temp = Integer.parseInt(s.substring(k,k+8), 2);
+                b[p] = Byte.parseByte(s.substring(k, k + 7), 2);
                 p++;
             }
-            //convert to byte and add to the array
-            b[0] = (byte) map.length;
-            b[1] = (byte) map[0].length;
-            b[2] = (byte) start.getRowIndex();
-            b[3] = (byte) start.getColumnIndex();
-            b[4] = (byte) goal.getRowIndex();
-            b[5] = (byte) goal.getColumnIndex();
+
             return b;
         }
-
+    public int locate(byte []b, int represenetive, int write)
+        {
+            int maxVal = 0, startIndex = 0, count = 0, index = 7;
+            while(maxVal<represenetive)
+            {
+                count++;
+                maxVal += MAX_VALUE;
+            }
+            String s = String.valueOf(represenetive);
+            Byte bit = valueOf(s, 10);
+            if(s.length()<8)
+                {
+                    while (s.length()!=8)
+                    s = "0" + s;
+                }
+            for(int k = 0;k<count; k++)
+                s = "0000000" + s;
+            //s = s + String.valueOf(represenetive);
+            for(int l = 0; l<=count; l++)
+            {
+                b[count + write] = Byte.parseByte(s.substring(startIndex, index));
+                startIndex = index+1;
+                index = index+8;
+            }
+            return count+1;
+        }
 }
