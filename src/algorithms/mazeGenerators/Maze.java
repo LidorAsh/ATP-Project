@@ -119,19 +119,21 @@ public class Maze {
                 count++;
                 maxVal += MAX_VALUE;
             }
-            String s = String.valueOf(represenetive);
-            Byte bit = valueOf(s, 10);
-            if(s.length()<8)
+            String s = Integer.toBinaryString(represenetive);
+            //Byte bit = valueOf(s, 10);
+            if(s.length()%8 != 0)
                 {
-                    while (s.length()!=8)
+                    while (s.length()%8 != 0)
                     s = "0" + s;
                 }
-            for(int k = 0;k<count; k++)
-                s = "0000000" + s;
+            //for(int k = 0;k<count; k++)
+            //    s = "0000000" + s;
             //s = s + String.valueOf(represenetive);
-            for(int l = 0; l<=count; l++)
+            for(int l = 0; l<count; l++)
             {
-                b[count + write] = Byte.parseByte(s.substring(startIndex, index));
+                if(startIndex == s.length())
+                    break;
+                b[count + write] = Byte.parseByte(s.substring(startIndex, index), 2);
                 startIndex = index+1;
                 index = index+8;
             }
