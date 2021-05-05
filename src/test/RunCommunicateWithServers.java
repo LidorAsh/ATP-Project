@@ -2,6 +2,7 @@ package test;
 
 import Client.Client;
 import Client.IClientStrategy;
+import IO.MyDecompressorInputStream;
 import Server.Server;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
