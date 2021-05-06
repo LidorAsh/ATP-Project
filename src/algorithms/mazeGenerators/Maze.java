@@ -22,6 +22,7 @@ public class Maze implements Serializable {
     }
 
     public Maze(byte[] b) {
+        //System.out.println(Arrays.toString(b)); ////////////////////////
         ByteArrayInputStream bis = new ByteArrayInputStream(b);
         ObjectInputStream in = null;
         try {

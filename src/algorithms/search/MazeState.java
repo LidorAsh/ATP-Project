@@ -1,10 +1,12 @@
 package algorithms.search;
 
 import algorithms.mazeGenerators.Position;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class MazeState extends AState{
+public class MazeState extends AState implements Serializable {
     private final Position p;
 
     public MazeState(Position p) {

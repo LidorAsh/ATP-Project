@@ -25,6 +25,7 @@ public class SimpleCompressorOutputStream extends OutputStream
 
     public void write(byte[] b) throws IOException
     {
+        //System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         ArrayList<Integer> arr = new ArrayList<>();
         ByteArrayInputStream bis = new ByteArrayInputStream(b);
         ObjectInputStream in = null;
