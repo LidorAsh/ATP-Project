@@ -15,14 +15,12 @@ public class MyCompressorOutputStream extends OutputStream
         }
 
         @Override
-        public void write(int b) throws IOException
-        {
+        public void write(int b) throws IOException {
 
         }
 
         @Override
-        public void write(byte[] b) throws IOException
-        {
+        public void write(byte[] b) throws IOException {
 
         }
 

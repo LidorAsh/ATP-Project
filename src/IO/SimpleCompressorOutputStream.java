@@ -1,64 +1,135 @@
 package IO;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import algorithms.mazeGenerators.Maze;
+import algorithms.mazeGenerators.Position;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.jar.JarOutputStream;
 
 public class SimpleCompressorOutputStream extends OutputStream
+{
+    private OutputStream out;
+
+    public SimpleCompressorOutputStream(OutputStream out)
     {
-        private OutputStream out;
+        this.out = out;
+    }
 
-        public SimpleCompressorOutputStream(OutputStream out)
-        {
-            this.out = out;
-        }
+    @Override
+    public void write(int b) throws IOException
+    {
 
-        @Override
-        public void write(int b) throws IOException
-        {
+    }
 
-        }
+    public void write(byte[] b) throws IOException
+    {
+        //System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        ArrayList<Integer> arr = new ArrayList<>();
+        ByteArrayInputStream bis = new ByteArrayInputStream(b);
+        ObjectInputStream in = null;
+        try {
+            in = new ObjectInputStream(bis);
+            Object o = in.readObject();
 
-        public void write(byte[] b) throws IOException
-            {
-            String s;
-            byte total;
-            int p = 6, counter = 0;
-            for(int i = 0;i<=5;i++)
-            {
-                out.write(b[i]);
+            Maze maze = (Maze) o;
+            int sizeY = maze.getYMazeLength();
+            int sizeX = maze.getXMazeLength();
+            int startRow = maze.getStartPosition().getRowIndex();
+            int startCOl = maze.getStartPosition().getColumnIndex();
+            int goalRow = maze.getGoalPosition().getRowIndex();
+            int goalCol = maze.getGoalPosition().getColumnIndex();
+            int [][] mazeMap = maze.getMap();
+
+            while(sizeY > 127) { // height of maze
+                arr.add(127);
+                sizeY -= 127;
             }
-            out.write((String.valueOf(b[6])).charAt(0));
-            for(int j = 0; j<= Byte.parseByte(String.valueOf(b[0]), 2); j = j+7)
-            {
-                //convert the byte to string
-                s = String.valueOf(b[p]);
-                for (int f = 1; f<=s.length()-1;f++)
-                {
-                    //take each letter in s and convert to int it and add to maze
-                    if(s.charAt(f) == s.charAt(f))
-                    {
-                        //in case they are the sa,e but no room left in the byte
-                        if(counter == 255)
-                        {
-                            total = (Byte.decode(String.valueOf(counter)));
-                            counter = 0;
-                            out.write(total);
-                            total = (Byte.decode(String.valueOf(counter)));
-                            out.write(total);
+            arr.add(sizeY);
+            arr.add(-1);
+
+            while(sizeX > 127) { // width of maze
+                arr.add(127);
+                sizeX -= 127;
+            }
+            arr.add(sizeX);
+            arr.add(-1);
+
+            while(startRow > 127) { // start - row index
+                arr.add(127);
+                startRow -= 127;
+            }
+            arr.add(startRow);
+            arr.add(-1);
+
+            while(startCOl > 127) { // start - column index
+                arr.add(127);
+                startCOl -= 127;
+            }
+            arr.add(startCOl);
+            arr.add(-1);
+
+            while(goalRow > 127) { // goal - row index
+                arr.add(127);
+                goalRow -= 127;
+            }
+            arr.add(goalRow);
+            arr.add(-1);
+
+            while(goalCol > 127) { // goal - column index
+                arr.add(127);
+                goalCol -= 127;
+            }
+            arr.add(goalCol);
+            arr.add(-1);
+
+            int last = mazeMap[0][0], counter = 0;
+            boolean flag = false;
+
+            for(int i = 0; i < maze.getYMazeLength(); i ++) {
+                for (int j = 0; j < maze.getXMazeLength(); j++) {
+
+                    if (mazeMap[i][j] == last) {
+                        if(flag){
+                            arr.add(0);
+                            flag= false;
                         }
                         counter++;
                     }
-                        //in case they are different
-                    else
-                    {
-                        total = (Byte.decode(String.valueOf(counter)));
-                        counter = 0;
-                        out.write(total);
+                    else { //if (mazeMap[i][j] != last)
+                        arr.add(counter);
+                        counter = 1;
+                        last = mazeMap[i][j];
                     }
-                    j++;
+
+                    if (counter == 127){
+                        arr.add(counter);
+                        counter = 0;
+                        flag = true;
+                    }
                 }
-                p++;
-                out.close();
+            }
+
+            arr.add(counter);
+
+            byte[] bytes = new byte[arr.size()];
+            for (int i = 0; i < bytes.length; i++) {
+                bytes[i] = arr.get(i).byteValue();
+            }
+            out.write(bytes);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                // ignore close exception
             }
         }
+
     }
+}
