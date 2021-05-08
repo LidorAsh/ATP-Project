@@ -25,6 +25,8 @@ public class SimpleCompressorOutputStream extends OutputStream
 
     public void write(byte[] b) throws IOException
     {
+        //System.out.println(Arrays.toString(b)); //////////////////////////////
+
         //System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         ArrayList<Integer> arr = new ArrayList<>();
         ByteArrayInputStream bis = new ByteArrayInputStream(b);
@@ -41,6 +43,9 @@ public class SimpleCompressorOutputStream extends OutputStream
             int goalRow = maze.getGoalPosition().getRowIndex();
             int goalCol = maze.getGoalPosition().getColumnIndex();
             int [][] mazeMap = maze.getMap();
+
+
+//            maze.print(); ////////////////
 
             while(sizeY > 127) { // height of maze
                 arr.add(127);

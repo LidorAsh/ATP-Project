@@ -22,11 +22,32 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy{
             //Object o = fromClient.readObject();
             Maze maze = (Maze) fromClient.readObject();
 
-            SearchableMaze searchableMaze = new SearchableMaze(maze);
-            ISearchingAlgorithm searcher = new BreadthFirstSearch(); // configurations
-            Solution solution = searcher.solve(searchableMaze);
+            String tempDirectoryPath = System.getProperty("java.io.tmpdir");
+            String filepath = tempDirectoryPath + "\\" + maze.hashCode();
 
-//            Thread.sleep(10000);
+            File solFile = new File(filepath);
+
+            Solution solution;
+
+            if (solFile.exists()) {
+                FileInputStream fileIn = new FileInputStream(filepath);
+                ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+                Object obj = objectIn.readObject();
+                solution = (Solution) obj;
+                objectIn.close();
+            }
+
+            else {
+                SearchableMaze searchableMaze = new SearchableMaze(maze);
+                ISearchingAlgorithm searcher = new BreadthFirstSearch(); // configurations
+                solution = searcher.solve(searchableMaze);
+
+                FileOutputStream fileOut = new FileOutputStream(filepath);
+                ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+                objectOut.writeObject(solution);
+                objectOut.close();
+            }
 
             toClient.writeObject(solution);
             toClient.flush();
@@ -34,10 +55,11 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy{
 //            toClient.close();
 //            fromClient.close();
 
-        } catch (EOFException e) {
+        } //catch (EOFException e) {
             // ... this is fine
 
-        } catch (IOException e) {
+        //}
+        catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

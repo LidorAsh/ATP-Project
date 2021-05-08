@@ -2,6 +2,7 @@ package algorithms.mazeGenerators;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static java.lang.Byte.*;
 
@@ -136,4 +137,20 @@ public class Maze implements Serializable {
 //        }
 //        return 1;
 //    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Maze maze = (Maze) o;
+        return Arrays.equals(map, maze.map) && Objects.equals(start, maze.start) && Objects.equals(goal, maze.goal);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(start, goal);
+        result = 31 * result + Arrays.hashCode(map);
+        return result;
+    }
 }

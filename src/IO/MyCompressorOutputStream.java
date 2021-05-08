@@ -3,6 +3,7 @@ package IO;
 import algorithms.maze3D.Position3D;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.zip.DeflaterOutputStream;
 
 public class MyCompressorOutputStream extends OutputStream
@@ -22,14 +23,31 @@ public class MyCompressorOutputStream extends OutputStream
         @Override
         public void write(byte[] b) throws IOException
         {
+            String mazeFileName = "savedMaze1.maze";
             try {
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+
+
+                OutputStream outToSimple = new SimpleCompressorOutputStream(new FileOutputStream(mazeFileName));
+                outToSimple.write(b);
+                outToSimple.flush();
+
+
+                InputStream inFromSimple = new FileInputStream(mazeFileName);
+                byte[] bytes = inFromSimple.readAllBytes();
+//                System.out.println(Arrays.toString(bytes));
+
+//                ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+
+
+                //ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 DeflaterOutputStream defl = new DeflaterOutputStream(out);
-                defl.write(b);
+                defl.write(bytes);
                 defl.flush();
                 defl.close();
 
-                out.toByteArray();
+
+                //out.toByteArray();
             } catch (Exception e) {
                 e.printStackTrace();
             /*String inFile = b[0];

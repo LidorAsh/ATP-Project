@@ -25,8 +25,13 @@ public class SimpleDecompressorInputStream extends InputStream
     @Override
     public int read(byte b[]) throws IOException
     {
+//        System.out.println(in.available()); //////////////////////
         byte[] tempBytes = new byte[in.available()];
         in.read(tempBytes);
+
+
+//        System.out.println(Arrays.toString(tempBytes)); //////////////////////////////
+
 
         ArrayList<Integer> arr = new ArrayList<>();
 
