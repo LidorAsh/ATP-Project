@@ -60,7 +60,7 @@ public class Server {
 
     private void handleClient(Socket clientSocket) {
         try {
-            strategy.applyStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
+            strategy.ServerStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
             //LOG.info("Done handling client: " + clientSocket.toString());
             clientSocket.close();
         } catch (IOException e){

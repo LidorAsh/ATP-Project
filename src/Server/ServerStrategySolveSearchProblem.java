@@ -1,6 +1,5 @@
 package Server;
 
-import IO.SimpleCompressorOutputStream;
 import algorithms.mazeGenerators.*;
 import algorithms.search.*;
 
@@ -10,7 +9,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
     private final Object lock = new Object();
 
     @Override
-    public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
+    public void ServerStrategy(InputStream inFromClient, OutputStream outToClient) {
         try {
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);

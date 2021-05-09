@@ -1,13 +1,12 @@
 package Server;
 
 import IO.MyCompressorOutputStream;
-import IO.SimpleCompressorOutputStream;
 import algorithms.mazeGenerators.*;
 import java.io.*;
 
 public class ServerStrategyGenerateMaze implements IServerStrategy{
     @Override
-    public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
+    public void ServerStrategy(InputStream inFromClient, OutputStream outToClient) {
 
         try {
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
@@ -38,7 +37,6 @@ public class ServerStrategyGenerateMaze implements IServerStrategy{
             byte[] bytes = bos.toByteArray();
             toClient.writeObject(bytes);
             toClient.flush();
-
 
             toClient.close();
             fromClient.close();
