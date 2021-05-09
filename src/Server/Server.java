@@ -25,60 +25,63 @@ public class Server {
         this.listeningIntervalMS = listeningIntervalMS;
         this.strategy = strategy;
         // initialize a new fixed thread pool with 2 threads:
-        this.threadPool = Executors.newFixedThreadPool(2);
+        Configurations conf = Configurations.getInstance();
+        this.threadPool = Executors.newFixedThreadPool(conf.getThreadPoolSize());
     }
 
     public void start(){
-        try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            serverSocket.setSoTimeout(listeningIntervalMS);
-            //LOG.info("Starting server at port = " + port);
-            System.out.println("Starting server at port = " + port);
-            while (!stop) {
-                try {
-                    Socket clientSocket = serverSocket.accept();
-                    //LOG.info("Client accepted: " + clientSocket.toString());
+        new Thread(() -> {
+            try {
+                ServerSocket serverSocket = new ServerSocket(port);
+                serverSocket.setSoTimeout(listeningIntervalMS);
+                //LOG.info("Starting server at port = " + port);
+//                System.out.println("Starting server at port = " + port);
+                while (!stop) {
+                    try {
+                        Socket clientSocket = serverSocket.accept();
+                        //LOG.info("Client accepted: " + clientSocket.toString());
 
-                    System.out.println("Client accepted: " + clientSocket.toString());
-
-
-                    // Insert the new task into the thread pool:
-                    threadPool.execute(() -> {
-                        handleClient(clientSocket);
-                    });
+//                        System.out.println("Client accepted: " + clientSocket.toString());
 
 
-                    // From previous lab:
-                    // This thread will handle the new Client
-                    //new Thread(() -> {
-                    //    handleClient(clientSocket);
-                    //}).start();
+                        // Insert the new task into the thread pool:
+                        threadPool.execute(() -> {
+                            handleClient(clientSocket);
+                        });
 
-                } catch (SocketTimeoutException e){
-                    //LOG.debug("Socket timeout");
-                    System.out.println("Socket timeout");
+
+                        // From previous lab:
+                        // This thread will handle the new Client
+                        //new Thread(() -> {
+                        //    handleClient(clientSocket);
+                        //}).start();
+
+                    } catch (SocketTimeoutException e) {
+                        //LOG.debug("Socket timeout");
+//                        System.out.println("Socket timeout");
+                    }
                 }
+                serverSocket.close();
+                threadPool.shutdown(); // do not allow any new tasks into the thread pool (not doing anything to the current tasks and running threads)
+                //threadPool.shutdownNow(); // do not allow any new tasks into the thread pool, and also interrupts all running threads (do not terminate the threads, so if they do not handle interrupts properly, they could never stop...)
+            } catch (IOException e) {
+                //LOG.error("IOException", e);
             }
-            serverSocket.close();
-            threadPool.shutdown(); // do not allow any new tasks into the thread pool (not doing anything to the current tasks and running threads)
-            //threadPool.shutdownNow(); // do not allow any new tasks into the thread pool, and also interrupts all running threads (do not terminate the threads, so if they do not handle interrupts properly, they could never stop...)
-        } catch (IOException e) {
-            //LOG.error("IOException", e);
-        }
+        }).start();
     }
 
     private void handleClient(Socket clientSocket) {
         try {
             strategy.applyStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
             //LOG.info("Done handling client: " + clientSocket.toString());
-            System.out.println("Done handling client: " + clientSocket.toString());
+//            System.out.println("Done handling client: " + clientSocket.toString());
             clientSocket.close();
         } catch (IOException e){
             //LOG.error("IOException", e);
         }
     }
 
-    public void stop(){
+    public void stop() {
         //LOG.info("Stopping server...");
         stop = true;
     }

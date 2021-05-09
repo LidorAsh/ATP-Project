@@ -92,6 +92,9 @@ public class SimpleCompressorOutputStream extends OutputStream
             int last = mazeMap[0][0], counter = 0;
             boolean flag = false;
 
+            if (last == 0)
+                arr.add(0);
+
             for(int i = 0; i < maze.getYMazeLength(); i ++) {
                 for (int j = 0; j < maze.getXMazeLength(); j++) {
 
@@ -122,6 +125,10 @@ public class SimpleCompressorOutputStream extends OutputStream
             for (int i = 0; i < bytes.length; i++) {
                 bytes[i] = arr.get(i).byteValue();
             }
+
+//            System.out.println(Arrays.toString(bytes));///////////////////
+
+
             out.write(bytes);
 
         } catch (ClassNotFoundException e) {

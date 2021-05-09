@@ -1,19 +1,22 @@
 package Server;
 
 import IO.SimpleCompressorOutputStream;
-import algorithms.mazeGenerators.IMazeGenerator;
-import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.mazeGenerators.*;
 import algorithms.search.*;
 
 import java.io.*;
 import java.util.ArrayList;
 
+
 public class ServerStrategySolveSearchProblem implements IServerStrategy{
+    private final Object lock = new Object();
+
     @Override
     public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
-
         try {
+
+//            Thread.sleep(5000);
+
             //InputStream interruptibleInputStream = Channels.newInputStream(Channels.newChannel(inFromClient));
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
@@ -40,13 +43,27 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy{
 
             else {
                 SearchableMaze searchableMaze = new SearchableMaze(maze);
-                ISearchingAlgorithm searcher = new BreadthFirstSearch(); // configurations
+
+                Configurations conf = Configurations.getInstance();
+                String generator = conf.getMazeSearchingAlgorithm();
+
+                ISearchingAlgorithm searcher = null;
+
+                if (generator.equalsIgnoreCase("DFS"))
+                    searcher = new DepthFirstSearch();
+                else if (generator.equalsIgnoreCase("BFS"))
+                    searcher = new BreadthFirstSearch();
+                else if (generator.equalsIgnoreCase("BEST"))
+                    searcher = new BestFirstSearch();
+
                 solution = searcher.solve(searchableMaze);
 
-                FileOutputStream fileOut = new FileOutputStream(filepath);
-                ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-                objectOut.writeObject(solution);
-                objectOut.close();
+                synchronized (lock) {
+                    FileOutputStream fileOut = new FileOutputStream(filepath);
+                    ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+                    objectOut.writeObject(solution);
+                    objectOut.close();
+                }
             }
 
             toClient.writeObject(solution);
@@ -64,6 +81,9 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+//        catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //        catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }

@@ -1,9 +1,8 @@
 package Server;
 
+import IO.MyCompressorOutputStream;
 import IO.SimpleCompressorOutputStream;
-import algorithms.mazeGenerators.IMazeGenerator;
-import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.mazeGenerators.*;
 
 import java.io.*;
 import java.nio.channels.Channels;
@@ -20,13 +19,24 @@ public class ServerStrategyGenerateMaze implements IServerStrategy{
             Object o = fromClient.readObject();
             int[] mazeSize = (int[]) o;
 
-            IMazeGenerator mazeGenerator = new MyMazeGenerator();
+            Configurations conf = Configurations.getInstance();
+            String generator = conf.getMazeGeneratingAlgorithm();
+            IMazeGenerator mazeGenerator = null;
+
+            if (generator.equalsIgnoreCase("Empty"))
+                mazeGenerator = new EmptyMazeGenerator();
+            else if (generator.equalsIgnoreCase("Simple"))
+                mazeGenerator = new SimpleMazeGenerator();
+            else if (generator.equalsIgnoreCase("My"))
+                mazeGenerator = new MyMazeGenerator();
+
+
             Maze maze = mazeGenerator.generate(mazeSize[0], mazeSize[1]);
 //            maze.print();
 //            Thread.sleep(10000);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            SimpleCompressorOutputStream s = new SimpleCompressorOutputStream(bos);
+            MyCompressorOutputStream s = new MyCompressorOutputStream(bos);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
 
 
