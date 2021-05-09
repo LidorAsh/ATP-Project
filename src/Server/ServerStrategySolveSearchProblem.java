@@ -5,24 +5,17 @@ import algorithms.mazeGenerators.*;
 import algorithms.search.*;
 
 import java.io.*;
-import java.util.ArrayList;
 
-
-public class ServerStrategySolveSearchProblem implements IServerStrategy{
+public class ServerStrategySolveSearchProblem implements IServerStrategy {
     private final Object lock = new Object();
 
     @Override
     public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
         try {
-
-//            Thread.sleep(5000);
-
-            //InputStream interruptibleInputStream = Channels.newInputStream(Channels.newChannel(inFromClient));
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
             toClient.flush();
 
-            //Object o = fromClient.readObject();
             Maze maze = (Maze) fromClient.readObject();
 
             String tempDirectoryPath = System.getProperty("java.io.tmpdir");
@@ -32,7 +25,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy{
 
             Solution solution;
 
-            if (solFile.exists()) {
+            if (solFile.exists()) { // whether there is solution for the current maze
                 FileInputStream fileIn = new FileInputStream(filepath);
                 ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
@@ -41,7 +34,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy{
                 objectIn.close();
             }
 
-            else {
+            else { // whether there is no solution for the current maze
                 SearchableMaze searchableMaze = new SearchableMaze(maze);
 
                 Configurations conf = Configurations.getInstance();
@@ -69,25 +62,13 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy{
             toClient.writeObject(solution);
             toClient.flush();
 
-//            toClient.close();
-//            fromClient.close();
+            toClient.close();
+            fromClient.close();
 
-        } //catch (EOFException e) {
-            // ... this is fine
-
-        //}
-        catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        }
+        catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-//        catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
 
     }
 

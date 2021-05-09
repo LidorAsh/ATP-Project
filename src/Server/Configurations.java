@@ -6,20 +6,13 @@ import java.util.Properties;
 public class Configurations {
 
     private static Configurations instance = null;
-    private Properties p;
+    private final Properties p;
     private OutputStream os;
     private InputStream is;
-    private String filePath = "resources//config.properties";
-
+    private final String filePath = "resources//config.properties";
 
     private Configurations() {
-//        try {
             this.p = new Properties();
-//            os = new FileOutputStream("resources//config.properties");
-//            is = new FileInputStream("resources//config.properties");
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public static Configurations getInstance() {
@@ -72,7 +65,10 @@ public class Configurations {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Integer.parseInt(ret);
+        if (ret != null) {
+            return Integer.parseInt(ret);
+        }
+        return 0;
     }
 
     public String getMazeGeneratingAlgorithm() {
@@ -100,9 +96,4 @@ public class Configurations {
         }
         return ret;
     }
-
-
-
-
-
 }

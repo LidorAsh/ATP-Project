@@ -2,11 +2,9 @@ package IO;
 
 import java.io.*;
 import java.util.zip.InflaterInputStream;
-import java.util.zip.InflaterOutputStream;
 
-public class MyDecompressorInputStream extends InputStream
-{
-    private InputStream in;
+public class MyDecompressorInputStream extends InputStream {
+    private final InputStream in;
 
     public MyDecompressorInputStream(InputStream in)
     {
@@ -14,51 +12,22 @@ public class MyDecompressorInputStream extends InputStream
     }
 
     @Override
-    public int read() throws IOException
-    {
+    public int read() {
         return 0;
     }
 
     @Override
-    public int read(byte b[]) throws IOException {
+    public int read(byte[] b) {
         try {
-
-//            System.out.println(in.available());
-
-            InflaterInputStream infl = new InflaterInputStream(in);
+            InflaterInputStream infl = new InflaterInputStream(in); // decompress the maze
             byte[] bytes = infl.readAllBytes();
-//            System.out.println(in.available());
 
-
-
-            InputStream inputStream = new SimpleDecompressorInputStream(new ByteArrayInputStream(bytes));
-            inputStream.read(b);
-
-
-
-
-
-
-            //ByteArrayInputStream out = new ByteArrayInputStream(in);
-//            InputStream inputStream = new SimpleDecompressorInputStream(new InflaterInputStream(in));
-
-            //byte[] tempBytes = new byte[infl.available()];
-            //infl.read(tempBytes);
-
-
-
-
-
-
-
-
-
+            InputStream inputStream = new SimpleDecompressorInputStream(new ByteArrayInputStream(bytes)); // use the simple decompressor
+            return inputStream.read(b);
 
         } catch (Exception e) {
             e.printStackTrace();
-
         }
-
         return 0;
     }
 }

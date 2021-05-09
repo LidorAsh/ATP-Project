@@ -2,14 +2,12 @@ package IO;
 
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SimpleDecompressorInputStream extends InputStream
 {
-    private InputStream in;
+    private final InputStream in;
 
     public SimpleDecompressorInputStream(InputStream in)
     {
@@ -17,111 +15,82 @@ public class SimpleDecompressorInputStream extends InputStream
     }
 
     @Override
-    public int read() throws IOException
-    {
+    public int read() {
         return 0;
     }
 
     @Override
-    public int read(byte b[]) throws IOException
-    {
-//        System.out.println(in.available()); //////////////////////
-        byte[] tempBytes = new byte[in.available()];
-        in.read(tempBytes);
-
-
-//        System.out.println(Arrays.toString(tempBytes)); //////////////////////////////
-
-
-        ArrayList<Integer> arr = new ArrayList<>();
-
-        int[][] mazeMap = null;
-        int sum = 0;
-        int counter = 0;
-        int index = 0;
-        for (int i = 0; i < tempBytes.length; i++) {
-
-            if (counter < 6) {
-                while (tempBytes[i] != -1) {
-                    sum += tempBytes[i];
-                    i++;
-                }
-                arr.add(sum);
-                sum = 0;
-                counter++;
-                if (counter == 5)
-                    mazeMap = new int[arr.get(0)][arr.get(1)];
-            }
-
-            else {
-                index = i;
-                break;
-            }
-        }
-
-
-        int turn = 1;
-        int x = 0, y = 0;
-        for (int i = index; i < tempBytes.length; i++) {
-
-            sum = tempBytes[i];
-
-            while(sum > 0){
-                mazeMap[y][x] = turn;
-                x++;
-
-                if (x == mazeMap[0].length){
-                    x = 0;
-                    y++;
-                }
-                sum--;
-            }
-
-            if (turn == 1)
-                turn = 0;
-            else
-                turn = 1;
-
-
-            //System.out.println(i);
-        }
-
-        //System.out.println();
-        //System.out.println(tempBytes.length);
-
-
-
-
-        Position start = new Position(arr.get(2), arr.get(3));
-        Position goal = new Position(arr.get(4), arr.get(5));
-
-        Maze maze = new Maze(mazeMap, start, goal);
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = null;
-
+    public int read(byte[] b) {
         try {
-            out = new ObjectOutputStream(bos);
-            out.writeObject(maze);
-            out.flush();
-            tempBytes = bos.toByteArray();
+            byte[] tempBytes = new byte[in.available()]; // get all the bytes available
+            in.read(tempBytes);
 
-            ByteArrayInputStream bis = new ByteArrayInputStream(tempBytes);
-            bis.read(b);
+            ArrayList<Integer> arr = new ArrayList<>();
 
-            return tempBytes.length;
+            int[][] mazeMap = null;
+            int sum = 0;
+            int counter = 0;
+            int index = 0;
+            for (int i = 0; i < tempBytes.length; i++) {
+                if (counter < 6) {
+                    while (tempBytes[i] != -1) {
+                        sum += tempBytes[i];
+                        i++;
+                    }
+                    arr.add(sum);
+                    sum = 0;
+                    counter++;
+                    if (counter == 5)
+                        mazeMap = new int[arr.get(0)][arr.get(1)];
+                } else {
+                    index = i;
+                    break;
+                }
+            }
 
+            int turn = 1;
+            int x = 0, y = 0;
+            for (int i = index; i < tempBytes.length; i++) {
+                sum = tempBytes[i];
+                while (sum > 0) {
+                    mazeMap[y][x] = turn;
+                    x++;
+
+                    if (x == mazeMap[0].length) {
+                        x = 0;
+                        y++;
+                    }
+                    sum--;
+                }
+
+                if (turn == 1)
+                    turn = 0;
+                else
+                    turn = 1;
+            }
+
+            Position start = new Position(arr.get(2), arr.get(3));
+            Position goal = new Position(arr.get(4), arr.get(5));
+
+            Maze maze = new Maze(mazeMap, start, goal);
+
+            try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                ObjectOutputStream out;
+                out = new ObjectOutputStream(bos);
+                out.writeObject(maze);
+                out.flush();
+                tempBytes = bos.toByteArray();
+
+                ByteArrayInputStream bis = new ByteArrayInputStream(tempBytes);
+                bis.read(b);
+
+                return tempBytes.length;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                bos.close();
-            } catch (IOException ex) {
-                // ignore close exception
-            }
         }
-
         return 0;
-
     }
 }

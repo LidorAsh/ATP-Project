@@ -3,17 +3,13 @@ package Server;
 import IO.MyCompressorOutputStream;
 import IO.SimpleCompressorOutputStream;
 import algorithms.mazeGenerators.*;
-
 import java.io.*;
-import java.nio.channels.Channels;
-import java.util.Arrays;
 
 public class ServerStrategyGenerateMaze implements IServerStrategy{
     @Override
     public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
 
         try {
-            //InputStream interruptibleInputStream = Channels.newInputStream(Channels.newChannel(inFromClient));
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
 
             Object o = fromClient.readObject();
@@ -32,13 +28,10 @@ public class ServerStrategyGenerateMaze implements IServerStrategy{
 
 
             Maze maze = mazeGenerator.generate(mazeSize[0], mazeSize[1]);
-//            maze.print();
-//            Thread.sleep(10000);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             MyCompressorOutputStream s = new MyCompressorOutputStream(bos);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
-
 
             s.write(maze.toByteArray());
             s.flush();
@@ -47,21 +40,13 @@ public class ServerStrategyGenerateMaze implements IServerStrategy{
             toClient.flush();
 
 
-//            toClient.close();
-//            fromClient.close();
+            toClient.close();
+            fromClient.close();
 
         } catch (EOFException e) {
             // ... this is fine
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-//        catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-
     }
 }

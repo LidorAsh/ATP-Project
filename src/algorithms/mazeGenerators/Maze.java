@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static java.lang.Byte.*;
+
 
 /**
  * This class represent a maze
@@ -23,30 +23,17 @@ public class Maze implements Serializable {
     }
 
     public Maze(byte[] b) {
-        //System.out.println(Arrays.toString(b)); ////////////////////////
         ByteArrayInputStream bis = new ByteArrayInputStream(b);
-        ObjectInputStream in = null;
-        try {
+        try (ObjectInputStream in = new ObjectInputStream(bis)) {
 
-            in = new ObjectInputStream(bis);
             Object o = in.readObject();
             Maze maze = (Maze) o;
             this.map = maze.getMap();
             this.start = maze.getStartPosition();
             this.goal = maze.getGoalPosition();
 
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException ex) {
-                // ignore close exception
-            }
         }
     }
 
@@ -87,56 +74,19 @@ public class Maze implements Serializable {
 
 
     public byte[] toByteArray() {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = null;
-        try {
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            ObjectOutputStream out;
             out = new ObjectOutputStream(bos);
             out.writeObject(this);
             out.flush();
-            byte[] yourBytes = bos.toByteArray();
-            return yourBytes;
+            return bos.toByteArray();
 
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                bos.close();
-            } catch (IOException ex) {
-                // ignore close exception
-            }
         }
+        // ignore close exception
         return null;
     }
-
-//    public int locate(byte []b, int represenetive, int write)
-//    {
-//        int maxVal = 0, startIndex = 0, count = 0, index = 7;
-//        while(maxVal<represenetive)
-//        {
-//            count++;
-//            maxVal += MAX_VALUE;
-//        }
-//        String s = Integer.toBinaryString(represenetive);
-//        //Byte bit = valueOf(s, 10);
-//        if(s.length()%8 != 0)
-//        {
-//            while (s.length()%8 != 0)
-//                s = "0" + s;
-//        }
-//        //for(int k = 0;k<count; k++)
-//        //    s = "0000000" + s;
-//        //s = s + String.valueOf(represenetive);
-//        for(int l = 0; l<count; l++)
-//        {
-//            if(startIndex == s.length())
-//                break;
-//            System.out.println(startIndex);
-//            b[count + write] = Byte.parseByte(s.substring(startIndex, index), 2);
-//            startIndex = index+1;
-//            index = index+8;
-//        }
-//        return 1;
-//    }
 
 
     @Override
@@ -144,13 +94,13 @@ public class Maze implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Maze maze = (Maze) o;
-        return Arrays.equals(map, maze.map) && Objects.equals(start, maze.start) && Objects.equals(goal, maze.goal);
+        return Arrays.deepEquals(map, maze.map) && Objects.equals(start, maze.start) && Objects.equals(goal, maze.goal);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(start, goal);
-        result = 31 * result + Arrays.hashCode(map);
+        result = 31 * result + Arrays.deepHashCode(map);
         return result;
     }
 }

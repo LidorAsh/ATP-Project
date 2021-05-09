@@ -1,15 +1,13 @@
 package Client;
 
-
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
 public class Client {
-    private InetAddress serverIP;
-    private int serverPort;
-    private IClientStrategy strategy;
+    private final InetAddress serverIP;
+    private final int serverPort;
+    private final IClientStrategy strategy;
 
     public Client(InetAddress serverIP, int serverPort, IClientStrategy strategy) {
         this.serverIP = serverIP;
@@ -20,7 +18,6 @@ public class Client {
     public void communicateWithServer(){
         try(Socket serverSocket = new Socket(serverIP, serverPort)){
 //            System.out.println("connected to server - IP = " + serverIP + ", Port = " + serverPort);
-
             strategy.clientStrategy(serverSocket.getInputStream(), serverSocket.getOutputStream());
 
         } catch (IOException e) {
