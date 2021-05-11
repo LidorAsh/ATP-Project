@@ -1,3 +1,5 @@
+package test;
+
 import Server.Configurations;
 
 public class InitialConfigurations {
