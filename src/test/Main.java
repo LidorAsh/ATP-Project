@@ -29,6 +29,7 @@ public class Main {
     private static int Port_ServerSearchProblemSolver = getRandomNumber(6001, 7000);
     private static int total_test = 0;
     private static int total_pass = 0;
+
     private static double avg_comp;
     private static final int ServerListeningIntervalMS = 1000;
     //<editor-fold desc="General">
