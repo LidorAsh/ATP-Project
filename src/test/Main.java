@@ -30,6 +30,8 @@ public class Main {
     private static int total_test = 0;
     private static int total_pass = 0;
     private static double avg_comp;
+
+
     private static final int ServerListeningIntervalMS = 1000;
     //<editor-fold desc="General">
     public static enum TestStatus {
